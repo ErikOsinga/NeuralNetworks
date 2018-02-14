@@ -34,16 +34,20 @@ def question2():
 	# print (H),'\n\n'
 
 def question3():
-	# np.arange(0,1,0.01)
-	x1, x2 = np.meshgrid(X[0],X[1])
+	x1, x2 =  np.arange(0,1,0.01), np.arange(0,1,0.01)
+	x1, x2 = np.meshgrid(x1,x2)
+	# x1, x2 = np.meshgrid(X[0],X[1]) # doesnt work because not enough values?
+
 	yhat = w[0] * x1 + w[1] * x2 + b
 	H = np.heaviside(yhat,0)
-	# H.reshape(x1.shape)
-	print (H)
+	# print (H)
+
 	plt.contourf(x1,x2,H)
 	plt.colorbar()
+	plt.xlim(-0.2,1.1)
+	plt.ylim(-0.2,1.1)
 	plt.show()
 
 # question1()
-question2()
+# question2()
 question3()
