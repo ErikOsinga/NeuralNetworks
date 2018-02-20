@@ -131,7 +131,25 @@ def different_measures():
 	print ('Best method, accuracy:')
 	print (best_method, max_accuracy)
 
-different_measures()
+# different_measures()
 # Method 2 (and 16, which is the same, give the best results.)
 # Followed by 3 and 10, which are correlation and minkowski
+
+def extra_feature():
+	# Use an extra feature to discriminate between 5 and 7.
+	# We'll use the number of pixels, that are written on. Just sum it all up.
+	digit5 = train_data[train_labels == 5]
+	digit7 = train_data[train_labels == 7]
+
+	feature5 = np.sum(digit5)/len(digit5)
+	feature7 = np.sum(digit7)/len(digit7)
+
+	total = np.abs(feature5 + feature7)
+
+	PC1 = len(digit5)/(len(digit5)+len(digit7))
+	print (PC1)
+
+
+
+extra_feature()
 
