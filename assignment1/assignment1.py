@@ -169,31 +169,26 @@ def extra_feature(plot=False):
 	PC7 = np.sum(n7) / (np.sum(n5) + np.sum(n7))
 	PX = (n5+n7) / (np.sum(n5+n7))
 
-	print (np.sum(PX_C5))
-	print (np.sum(PX_C7))
-	print (np.sum(PC5))
-	print (np.sum(PC7))
 	# Probability that the class is C, when X in the current bin.
 	PC5_X = (PX_C5 * PC5) / PX
 	PC7_X = (PX_C7 * PC7) / PX
 
-	print (PC5_X, PC7_X)
-
 	return PC5_X, PC7_X, bins5, bins7
 
-PC5_X, PC7_X, bins5, bins7 = extra_feature(True)
+PC5_X, PC7_X, bins5, bins7 = extra_feature(plot=False)
 
 def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	digit5 = test_data[test_labels == 5]
 	digit7 = test_data[test_labels == 7]
 
 	data = np.append(digit5,digit7,axis=0)
+	labels = np.append(test_labels[test_labels==5],test_labels[test_labels==7])
 	feature = np.sum(data,axis=1)
 
 	bincenters5 = 0.5*(bins5[1:]+bins5[:-1])
 	bincenters7 = 0.5*(bins7[1:]+bins7[:-1])
 
-	bins = 15
+	bins = 14
 	# calculate the distance to the center of each bin
 	d_to_center5 = np.abs((feature.reshape(len(feature),1) - bincenters5.reshape(1,bins))).T
 	d_to_center7 = np.abs((feature.reshape(len(feature),1) - bincenters7.reshape(1,bins))).T
@@ -202,31 +197,16 @@ def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	index_bin5 = np.argmin(d_to_center5,axis=0)
 	index_bin7 = np.argmin(d_to_center7,axis=0)
 
-	prob5 = PC5_X[index_bin5]
-	prob7 = PC7_X[index_bin7]
+	prob5 = PC5_X[index_bin5] # for each entry in data, the probability that it's a five
+	prob7 = PC7_X[index_bin7] # for each entry in data, the probability that it's a seven
 
-	# print (prob5)
-	# print ('\n')
-	# print (prob7)
-	print (prob5 > prob7)
+	classification = np.zeros(len(prob5))
+	# classify based on highest probability
+	classification[prob5 > prob7] = 5 
+	classification[prob7 > prob5] = 7 
+	
+	print ('Accuracy:', np.sum(classification == labels)/len(classification))
 
-	'''
-	all_prob5 = []
-	for case in feature5:
-		index_bin = np.where(case > bins5)[0][-1] # finds the index of the bin
-													# that our feature is in
-		prob5 = (PC5_X[index_bin])
-		all_prob5.append(prob5)
-	all_prob7 = []
-	for case in feature7:
-		print (np.where(case > bins7))
-		print (bins7)
-		print (case)
-		index_bin = np.where(case > bins7)[0][-1]
-		prob7 = (PC7_X[index_bin])
-		all_prob7.append(prob7)
-
-	print (all_prob5, all_prob7)
-	'''
 
 bayes_classification(PC5_X, PC7_X, bins5, bins7)
+
