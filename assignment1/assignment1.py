@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 from matplotlib import pyplot as plt
 import itertools
 from sklearn.metrics import confusion_matrix
@@ -52,7 +52,7 @@ def analyze_distance(measure=2):
 	return all_centers, all_radii, all_ni
 
 def classify_distance(all_centers,data,measure):
-	digit_distances = [] # (10,1707) array containing the distances for each number 
+	digit_distances = [] # (10,1707) array containing the distances for each number
 						# for each training instance
 	for digit in digits:
 		if measure == 2:
@@ -75,7 +75,7 @@ def different_measures():
 	measure = 2
 
 	all_centers, all_radii, all_ni = analyze_distance(measure)
-	distance_matrix = np.zeros((10,10)) # stores the distances between cloud_i and cloud_j in 
+	distance_matrix = np.zeros((10,10)) # stores the distances between cloud_i and cloud_j in
 										# position (i,j) or position (j,i)
 	for iterable in itertools.combinations(range(0,10),2):
 		i,j = iterable
@@ -84,14 +84,14 @@ def different_measures():
 		distance_matrix[j,i] = distance
 	"""
 	print ('Minimum distance is found between digit 7 and 9:')
-	print (distance_matrix[7,9]) 
+	print (distance_matrix[7,9])
 	# the minimum distance is between 7 and 9. Hardest to seperate.
 	# 9 and 4 are the second minimum distance.
 	# 0 and 1 are the easiest, but one is the easiest it seems.
 	print ('Sum of distances per digit:')
 	print (np.sum(distance_matrix,axis=0)) # to see which numbers are most easily classified.
 	"""
-	
+
 	classify = classify_distance(all_centers,train_data,measure)
 	C_train = confusion_matrix(train_labels,classify)
 	C_train = C_train / np.sum(C_train,axis=1)
@@ -102,11 +102,11 @@ def different_measures():
 	C_test = confusion_matrix(test_labels,classify_test)
 	C_test = C_test / np.sum(C_test,axis=1)
 	# print (C_test)
-	# Pretty ok still, the two and three dropped the most. 
+	# Pretty ok still, the two and three dropped the most.
 	# for i in range(10):
 	# 	print (i, C_train[i][i], C_test[i][i], (C_train[i][i]-C_test[i][i]))
 
-	# We think the difference is because 2 and 3 are more susceptible to being writting in a 
+	# We think the difference is because 2 and 3 are more susceptible to being writting in a
 	# different way than for example 0 and 1.
 
 
@@ -151,8 +151,8 @@ def extra_feature(plot=False):
 	# plt.show()
 
 	plt.title('Histogram of the feature for digit 5 and 7')
-	binedges = np.array([-217.014 , -200.4061, -183.7982, -167.1903, -150.5824, -133.9745,
-       -117.3666, -100.7587,  -84.1508,  -67.5429,  -50.935, -34, -17, 0, 20, 40])
+	binedges = np.array([-280, -217.014 , -200.4061, -183.7982, -167.1903, -150.5824, -133.9745,
+       -117.3666, -100.7587,  -84.1508,  -67.5429,  -50.935, -34, -17, 0, 20, 40, 90])
 	n5, bins5, patches5 = plt.hist(feature5,label='digit 5',alpha=0.5,bins=binedges)
 	n7, bins7, patches7 = plt.hist(feature7,label='digit 7',alpha=0.5,bins=binedges)
 	plt.legend()
