@@ -151,8 +151,8 @@ def extra_feature(plot=False):
 	# plt.show()
 
 	plt.title('Histogram of the feature for digit 5 and 7')
-	binedges = np.array([-280, -217.014 , -200.4061, -183.7982, -167.1903, -150.5824, -133.9745,
-       -117.3666, -100.7587,  -84.1508,  -67.5429,  -50.935, -34, -17, 0, 20, 40, 90])
+	binedges = np.array([ -217.014 , -200.4061, -183.7982, -167.1903, -150.5824, -133.9745,
+       -117.3666, -100.7587,  -84.1508,  -67.5429,  -50.935, -34, -17, 0, 20])
 	n5, bins5, patches5 = plt.hist(feature5,label='digit 5',alpha=0.5,bins=binedges)
 	n7, bins7, patches7 = plt.hist(feature7,label='digit 7',alpha=0.5,bins=binedges)
 	plt.legend()
