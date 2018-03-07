@@ -1,0 +1,22 @@
+For a learning rate of 0.005, after 10 iterations it seems we update our weights way too harsh again
+and then the MSE gets stuck, and the wrong classified digits is stuck at 1388
+
+
+
+Wrong classified digits: 1273.000000 
+8
+Mean squared error: 382.234135
+Wrong classified digits: 1245.000000 
+9
+Mean squared error: 377.498266
+Wrong classified digits: 1214.000000 
+10
+Mean squared error: 373.226511
+Wrong classified digits: 1185.000000 
+11
+Mean squared error: 637.076001
+Wrong classified digits: 1388.000000 
+
+
+
+

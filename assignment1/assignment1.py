@@ -175,7 +175,7 @@ def extra_feature(plot=False):
 
 	return PC5_X, PC7_X, bins5, bins7
 
-PC5_X, PC7_X, bins5, bins7 = extra_feature(plot=False)
+PC5_X, PC7_X, bins5, bins7 = extra_feature(plot=True)
 
 def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	digit5 = test_data[test_labels == 5]
