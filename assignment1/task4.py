@@ -23,8 +23,10 @@ def train_single_layer_perceptron(learning_rate = 0.05):
 	w = np.random.rand(257,10)  # 256 + 1 for the bias, 10 output nodes.
 
 	bad_class = 1e6 # initialization
+	full_iterations = 0
 	while bad_class > 0:
 		bad_class = 0
+		full_iterations += 1 
 
 		for i in range(train_data.shape[1]):
 			X = train_data[:,i]
@@ -44,16 +46,15 @@ def train_single_layer_perceptron(learning_rate = 0.05):
 				bad_class += 1
 
 		# print ('Number of wrong classifications: ', bad_class)
+	# print ('Required number of full iterations over the training set: %i' %full_iterations)
 
-	return w
-
-w = train_single_layer_perceptron()
+	return w, full_iterations
 
 def test_single_layer_perceptron(w):
 	"""
 	Test given weights w on the test set. Print the accuracy.
 	"""
-	
+
 	bad_class = 0
 	for i in range(test_data.shape[1]):
 		X = test_data[:,i]
@@ -66,7 +67,37 @@ def test_single_layer_perceptron(w):
 		if yhat != ylabel:
 			bad_class += 1
 
-	print ('Number of wrong classifications on the test set: ', bad_class)
-	print ('Accuracy: ', 1 - bad_class/test_data.shape[1])
+	# print ('Number of wrong classifications on the test set: ', bad_class)
+	accuracy = 1 - bad_class/test_data.shape[1]
 
-test_single_layer_perceptron(w)
+	return accuracy
+
+# Quick bool to decide if we want 1 or 1000 iterations.
+one_iteration = True
+
+if one_iteration:
+	w, full_iterations = train_single_layer_perceptron()
+	accuracy = test_single_layer_perceptron(w)
+	print ('Accuracy on the test set: ', accuracy)
+
+else:
+	all_iterations = []
+	all_accuracy = []
+	for initial in range(1000):
+		w, full_iterations = train_single_layer_perceptron()
+		accuracy = test_single_layer_perceptron(w)
+
+		all_iterations.append(full_iterations)
+		all_accuracy.append(accuracy)
+
+	plt.hist(all_iterations)
+	plt.title('Number of iterations needed for %i random initializations'  % (initial+1))
+	plt.xlabel('Number of iterations')
+	plt.ylabel('Count')
+	plt.show()
+
+	plt.hist(all_accuracy)
+	plt.title('Accuracy for %i random initializations' % (initial+1))
+	plt.xlabel('Accuracy')
+	plt.ylabel('Count')
+	plt.show()

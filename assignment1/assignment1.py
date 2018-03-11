@@ -215,7 +215,7 @@ def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	bincenters7 = 0.5*(bins7[1:]+bins7[:-1])
 
 	bins = 14
-	# calculate the distance to the center of each bin
+	# calculate the distance to the center of each feature bin
 	d_to_center5 = np.abs((feature.reshape(len(feature),1) - bincenters5.reshape(1,bins))).T
 	d_to_center7 = np.abs((feature.reshape(len(feature),1) - bincenters7.reshape(1,bins))).T
 

@@ -1,15 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-train_data = np.loadtxt('data/train_in.csv',delimiter=',') # Shape is (1707,256)
-train_labels = np.loadtxt('data/train_out.csv') # Shape is (1707,)
-test_data = np.loadtxt('data/test_in.csv',delimiter=',')# Shape is (1000,256)
-test_labels = np.loadtxt('data/test_out.csv') # Shape is (1000,)
-digits = range(0,10)
-
-train_data = train_data.T # make sure X is in shape (256, number of examples)
-test_data = test_data.T
-
 def sigmoid(X):
 	"""
 	Calculate the sigmoid function for vector X
@@ -59,31 +50,71 @@ def mse(weights):
 
 	MSE = 1./4 * np.sum( (np.asarray(targets) - np.asarray(predictions) )**2 )
 
-	print ('Mean squared error: ', MSE)
-
-	print ('Wrong predictions: ', wrong_predictions)
-
-	return MSE
+	return MSE, wrong_predictions
 
 def grdmse(weights):
 	eta = 1e-3
 
 	dw = []
+	MSE, wrong_predictions = mse(weights)
+	# print ('Mean squared error: ', MSE)
+	# print ('Wrong predictions: ', wrong_predictions)
+
 	for i in range(len(weights)):
 		new_weights = np.copy(weights)
 		new_weights[i] = new_weights[i]+eta
 		
-		dw_i = (mse(new_weights) - mse(weights)) / eta
+		dw_i = (mse(new_weights)[0] - MSE) / eta
 		dw.append(dw_i)
 
-	return np.asarray(dw)
+	return np.asarray(dw), MSE, wrong_predictions
 
 
-def gradient_descent(learning_rate=1):
+def gradient_descent(learning_rate=1.0):
 	weights = np.random.randn(9)
 
+	all_MSE = []
+	all_wrong_predictions = []
 	for i in range(3000):
-		weights = weights - learning_rate * grdmse(weights)
+		dw, MSE, wrong_predictions = grdmse(weights)
+		all_MSE.append(MSE)
+		all_wrong_predictions.append(wrong_predictions)
+		weights = weights - learning_rate * dw
 
-		
-gradient_descent()
+	return all_MSE, all_wrong_predictions
+
+def plot_all(all_MSE,all_wrong_predictions,iteration):
+	f, axarr = plt.subplots(2, sharex=True)
+	axarr[0].set_title('3000 iterations of gradient descent')
+	axarr[0].plot(all_MSE)
+	axarr[1].plot(all_wrong_predictions)
+	axarr[1].set_xlabel('Iterations')
+	axarr[0].set_ylabel('Mean squared error')
+	axarr[1].set_ylabel('Wrong predictions')
+	axarr[1].set_ylim(0,4)
+	axarr[0].set_ylim(0,0.4)
+
+	f.tight_layout()
+	# plt.show()
+	plt.savefig('./figures/%i.png'%iteration)
+	plt.close()
+	
+all_i_till_converge = []
+n = 20 # Number of different seeds used for the initialization of the weights
+for iteration in range(0,n):
+	np.random.seed(iteration)
+	all_MSE, all_wrong_predictions = gradient_descent(learning_rate=0.5)
+	try:
+		i_till_converge = np.where(np.asarray(all_wrong_predictions) == 0)[0][0]
+	except IndexError:
+		i_till_converge = 5000
+
+	all_i_till_converge.append(i_till_converge)
+	# plot_all(all_MSE,all_wrong_predictions,iteration)
+
+plt.plot(all_i_till_converge)
+plt.xlabel('Random seed')
+plt.xticks(range(0,n))
+plt.ylabel('Amount of iterations until 0 wrong predictions')
+plt.ylim(0,3000)
+plt.show()
