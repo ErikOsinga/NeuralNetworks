@@ -52,6 +52,11 @@ def analyze_distance(measure=2):
 	return all_centers, all_radii, all_ni
 
 def classify_distance(all_centers,data,measure):
+	"""
+	Returns the classification of the data, given the digit cluster centers
+	and the distance measure.
+	"""
+
 	digit_distances = [] # (10,1707) array containing the distances for each number
 						# for each training instance
 	for digit in digits:
@@ -71,9 +76,13 @@ def classify_distance(all_centers,data,measure):
 	return classify
 
 def different_measures():
+	"""
+	Run the analyze_distance and classify_distance functions for different measures
+	"""
+
+
 	""" Euclidian """
 	measure = 2
-
 	all_centers, all_radii, all_ni = analyze_distance(measure)
 	distance_matrix = np.zeros((10,10)) # stores the distances between cloud_i and cloud_j in
 										# position (i,j) or position (j,i)
@@ -135,7 +144,7 @@ def different_measures():
 # Method 2 (and 16, which is the same, give the best results.)
 # Followed by 3 and 10, which are correlation and minkowski
 
-def extra_feature(plot=False):
+def extra_feature(plot=False,plotprob=False):
 	# Use an extra feature to discriminate between 5 and 7.
 	# We'll use the number of pixels, that are written on. Just sum it all up.
 	digit5 = train_data[train_labels == 5]
@@ -156,12 +165,12 @@ def extra_feature(plot=False):
 	n5, bins5, patches5 = plt.hist(feature5,label='digit 5',alpha=0.5,bins=binedges)
 	n7, bins7, patches7 = plt.hist(feature7,label='digit 7',alpha=0.5,bins=binedges)
 	plt.legend()
-	plt.xlabel('Feature')
+	plt.xlabel('Amount of ink')
 	plt.ylabel('Count')
 	if plot	:
 		plt.show()
 	else:
-		plt.close()
+		plt.clf()
 
 	PX_C5 = n5 / np.sum(n5)
 	PC5 = np.sum(n5) / (np.sum(n5) + np.sum(n7))
@@ -173,9 +182,26 @@ def extra_feature(plot=False):
 	PC5_X = (PX_C5 * PC5) / PX
 	PC7_X = (PX_C7 * PC7) / PX
 
+	if plotprob: # Plot the probability distribution P(X) and P(C|X)
+		bincenters5 = 0.5*(bins5[1:]+bins5[:-1])
+		plt.title("Probability distribution for the 'amount of ink' ")
+		plt.plot(bincenters5,PX)
+		plt.xlabel('Amout of ink')
+		plt.ylabel('Probability')
+		plt.show()
+
+		plt.title("Probability P(C|X)")
+		plt.plot(bincenters5,PC5_X,label='digit 5')
+		plt.plot(bincenters5,PC7_X,label='digit 7')
+		plt.xlabel('Amout of ink')
+		plt.ylabel('Probability')
+		plt.legend()
+		plt.show()
+
+
 	return PC5_X, PC7_X, bins5, bins7
 
-PC5_X, PC7_X, bins5, bins7 = extra_feature(plot=True)
+PC5_X, PC7_X, bins5, bins7 = extra_feature(plot=False,plotprob=True)
 
 def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	digit5 = test_data[test_labels == 5]
@@ -205,6 +231,7 @@ def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	classification[prob5 > prob7] = 5 
 	classification[prob7 > prob5] = 7 
 	
+	# Make sure to use python3, or the integer division will lead to 0.
 	print ('Accuracy:', np.sum(classification == labels)/len(classification))
 
 
