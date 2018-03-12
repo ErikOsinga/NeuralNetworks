@@ -100,27 +100,35 @@ def grdmse(data, w1, w2):
 
 	MSE, yhat = mse(data, w1, w2)
 	print ('Mean squared error: %f' % MSE)
-	print ('Number of wrongly classified digits: %f ' % np.count_nonzero(yhat - train_labels))
+	number_wrong = np.count_nonzero(yhat - train_labels)
+	print ('Number of wrongly classified digits: %f ' % number_wrong )
 
-	return dw1, dw2
+	return dw1, dw2, MSE, number_wrong
 
-def gradient_descent(learning_rate=10.0):
+def gradient_descent(learning_rate=8.0):
 	w1 = np.random.randn(257,10)
 	w2 = np.random.randn(11,10)
 
 	print ('Learning rate %f' %learning_rate)
 
 	# dw1, dw2 = grdmse(train_data, w1, w2)
-	
-	for epoch in range(100):#3000):
+
+	all_MSE = []
+	all_number_wrong = []	
+	for epoch in range(4000):#3000):
 		print ('\nEpoch number %i ' % epoch)
-		# if epoch % 20 == 0:
-		# 	learning_rate *= 2
-		dw1, dw2 = grdmse(train_data, w1, w2)
-		w1 = w1 - learning_rate * dw1
-		w2 = w2 - learning_rate * dw2
+		dw1, dw2, MSE, number_wrong = grdmse(train_data, w1, w2)
+		w1 -= learning_rate * dw1
+		w2 -= learning_rate * dw2
 		print ('Summed value of the weights w2: %f ' % np.sum(w2) )
-		# print ('After update', w2)
+		all_MSE.append(MSE)
+		all_number_wrong.append(number_wrong)
+
+	np.save('./results/w1_LR_%.2f'%learning_rate,w1)
+	np.save('./results/w2_LR_%.2f'%learning_rate,w2)
+	np.save('./results/all_MSE_%.2f'%learning_rate,all_MSE)
+	np.save('./results/all_number_wrong_%.2f'%learning_rate,all_number_wrong)
+
 
 gradient_descent()
 
