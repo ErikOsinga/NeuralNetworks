@@ -129,8 +129,38 @@ def gradient_descent(learning_rate=8.0):
 	np.save('./results/all_MSE_%.2f'%learning_rate,all_MSE)
 	np.save('./results/all_number_wrong_%.2f'%learning_rate,all_number_wrong)
 
+def test_set(w1,w2,all_MSE,all_number_wrong):
+	"""
+	Test certain trained weights w1, w2 on the test set.
+	"""
 
-gradient_descent()
+	A2, yhat = digits_net(test_data,w1,w2)
+	number_wrong = np.count_nonzero(yhat - test_labels)
+	print ('Number of wrongly classified digits: %f ' % number_wrong )
+	accuracy = 1 - number_wrong/test_data.shape[1] 
+	print ('Accuracy: %f' % accuracy)
+
+	fig, ax1 = plt.subplots()
+	# plt.title('MSE vs iterations of gradient descent')
+	ax1.plot(all_MSE,c='r')
+	ax1.set_xlabel('Iteration number')
+	ax1.set_ylabel('MSE',color='r')
+
+	ax2 = ax1.twinx()
+	ax2.plot(all_number_wrong,c='b')
+	ax2.set_ylabel('Number of misclassified examples',color='b')
+	plt.show()
+
+
+	# plt.show()
+
+
+# gradient_descent()
+w1 = np.load('results/w1_LR_10.00.npy')
+w2 = np.load('results/w2_LR_10.00.npy')
+all_MSE10 = np.load('results/all_MSE_10.00.npy')
+all_number_wrong = np.load('results/all_number_wrong_10.00.npy')
+test_set(w1,w2,all_MSE10,all_number_wrong)
 
 
 '''
