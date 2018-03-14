@@ -34,7 +34,7 @@ def sigmoid(X):
 
 def digits_net(data, w1, w2):
 	"""
-
+	Forward pass of the network
 	"""
 
 	# add the bias to the training data  shape (257, number of examples)
@@ -63,9 +63,9 @@ def digits_net(data, w1, w2):
 	return A2, yhat
 
 def mse(data, w1, w2):
-	'''
+	"""
 	Calculate the MSE for every one of the output nodes and return this as a (10,) array
-	'''
+	"""
 	
 	A2, yhat = digits_net(data, w1, w2)
 
@@ -76,6 +76,9 @@ def mse(data, w1, w2):
 	return np.sum(MSE), yhat # calculate the mean squared error over all output nodes
 
 def grdmse(data, w1, w2):
+	"""
+	Calculate the gradient of the MSE for every weight.
+	"""
 	eta = 1e-8
 
 	dw1 = np.copy(w1) # we change every value to dw1 anyways
@@ -106,6 +109,9 @@ def grdmse(data, w1, w2):
 	return dw1, dw2, MSE, number_wrong
 
 def gradient_descent(learning_rate=8.0):
+	"""
+	Implement the gradient descent algorithm.
+	"""
 	w1 = np.random.randn(257,10)
 	w2 = np.random.randn(11,10)
 
@@ -154,6 +160,20 @@ def test_set(w1,w2,all_MSE,all_number_wrong):
 
 	# plt.show()
 
+def all_learning_rates():
+	"""Plot the MSE for all learning rates to see the difference"""
+	for i in ['2.00','5.00','8.00','10.00']:
+		w1 = np.load('results/w1_LR_'+i+'.npy')
+		w2 = np.load('results/w2_LR_'+i+'.npy')
+		all_MSE = np.load('results/all_MSE_'+i+'.npy')
+		plt.plot(all_MSE,label='Learning rate ' + i)
+
+	plt.legend()
+	plt.ylabel('MSE')
+	plt.xlabel('Iteration of gradient descent')
+	plt.show()
+
+
 
 # gradient_descent()
 w1 = np.load('results/w1_LR_10.00.npy')
@@ -162,10 +182,4 @@ all_MSE10 = np.load('results/all_MSE_10.00.npy')
 all_number_wrong = np.load('results/all_number_wrong_10.00.npy')
 test_set(w1,w2,all_MSE10,all_number_wrong)
 
-
-'''
-Mean squared error: 15.764254
-Wrong classified digits: 63.000000 
-Iterations 1617
-
-'''
+# all_learning_rates()

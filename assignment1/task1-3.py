@@ -91,33 +91,14 @@ def different_measures():
 		distance = np.linalg.norm(all_centers[i] - all_centers[j])
 		distance_matrix[i,j] = distance
 		distance_matrix[j,i] = distance
-	"""
-	print ('Minimum distance is found between digit 7 and 9:')
-	print (distance_matrix[7,9])
-	# the minimum distance is between 7 and 9. Hardest to seperate.
-	# 9 and 4 are the second minimum distance.
-	# 0 and 1 are the easiest, but one is the easiest it seems.
-	print ('Sum of distances per digit:')
-	print (np.sum(distance_matrix,axis=0)) # to see which numbers are most easily classified.
-	"""
 
 	classify = classify_distance(all_centers,train_data,measure)
 	C_train = confusion_matrix(train_labels,classify)
 	C_train = C_train / np.sum(C_train,axis=1)
-	# print (C_train)
-	# Pretty good score on the train data
 
 	classify_test = classify_distance(all_centers,test_data,measure)
 	C_test = confusion_matrix(test_labels,classify_test)
 	C_test = C_test / np.sum(C_test,axis=1)
-	# print (C_test)
-	# Pretty ok still, the two and three dropped the most.
-	# for i in range(10):
-	# 	print (i, C_train[i][i], C_test[i][i], (C_train[i][i]-C_test[i][i]))
-
-	# We think the difference is because 2 and 3 are more susceptible to being writting in a
-	# different way than for example 0 and 1.
-
 
 	""" Other metrics """
 	max_accuracy = 0
@@ -233,7 +214,6 @@ def bayes_classification(PC5_X, PC7_X, bins5, bins7):
 	
 	# Make sure to use python3, or the integer division will lead to 0.
 	print ('Accuracy:', np.sum(classification == labels)/len(classification))
-
 
 bayes_classification(PC5_X, PC7_X, bins5, bins7)
 

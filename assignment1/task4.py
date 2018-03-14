@@ -75,12 +75,12 @@ def test_single_layer_perceptron(w):
 # Quick bool to decide if we want 1 or 1000 iterations.
 one_iteration = True
 
-if one_iteration:
+if one_iteration: # Train the single layer perceptron once until 100\% accuracy
 	w, full_iterations = train_single_layer_perceptron()
 	accuracy = test_single_layer_perceptron(w)
 	print ('Accuracy on the test set: ', accuracy)
 
-else:
+else: # Train the single layer perceptron 1000 times until 100\% accuracy
 	all_iterations = []
 	all_accuracy = []
 	for initial in range(1000):

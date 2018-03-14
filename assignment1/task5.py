@@ -13,7 +13,9 @@ def sigmoid(X):
 
 def xor_net(x1,x2,weights):
 	"""
-	weights is the vector [w1, ... , w9] containing the weights. 
+	The forward pass of the network for the XOR function.
+	x1, x2 are the inputs (0 or 1) and weights is the 
+	vector [w1, ... , w9] containing the weights. 
 	"""
 
 	# reshape weights for matrix multiplications
@@ -25,7 +27,7 @@ def xor_net(x1,x2,weights):
 	A1 = sigmoid( np.dot(w1.T,X1) ) # shape (2,1)
 	assert A1.shape == (2,1)
 	A1 = np.append(A1,[[+1]],axis=0) # add the bias node
-
+	# forward pass and activation of output layer
 	A2 = np.squeeze(sigmoid( np.dot(w2.T,A1) )) # shape (1,1)
 
 	if A2 > 0.5:
@@ -36,6 +38,10 @@ def xor_net(x1,x2,weights):
 	return A2, yhat
 
 def mse(weights):
+	"""
+	Calculate the MSE for the 4 possible examples of the XOR problem.
+	Returns the MSE and the amount of wrong predictions by xor_net
+	"""
 	input_vectors = [ [0,0], [0,1], [1,0], [1,1] ]
 	targets = [0, 1, 1, 0]
 
@@ -53,7 +59,10 @@ def mse(weights):
 	return MSE, wrong_predictions
 
 def grdmse(weights):
-	eta = 1e-3
+	"""
+	Calculate the gradient of the MSE with respect to every weight. 
+	"""
+	eta = 1e-3 # small step value for numeric derivative calculation
 
 	dw = []
 	MSE, wrong_predictions = mse(weights)
@@ -71,6 +80,9 @@ def grdmse(weights):
 
 
 def gradient_descent(learning_rate=1.0):
+	"""
+	Implement the gradient descent algorithm using the previous functions.
+	"""
 	weights = np.random.randn(9)
 
 	all_MSE = []
@@ -99,6 +111,8 @@ def plot_all(all_MSE,all_wrong_predictions,iteration):
 	plt.savefig('./figures/%i.png'%iteration)
 	plt.close()
 	
+
+"""Run the gradient descent algorithm for 20 different random seeds"""
 all_i_till_converge = []
 n = 20 # Number of different seeds used for the initialization of the weights
 for iteration in range(0,n):
