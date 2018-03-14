@@ -31,7 +31,7 @@ def analyze_distance(measure=2):
 		center = np.mean(cloud, axis=0)
 		assert center.shape == (256,)
 
-		if measure == 2:
+		if measure == 2: # Euclidian
 			radius = np.abs(center - train_data) # (1707,256) array containing vector difference
 			radius = np.linalg.norm(radius,axis=1) # (1707,) array containing distance to all points
 			radius = np.max(radius)
