@@ -19,7 +19,7 @@ import numpy as np
 
 batch_size = 128
 num_classes = 10
-epochs = 2#12
+epochs = 12#12
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -88,7 +88,7 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
 """
-Much much slower. 
+Much much slower.
 
 Test loss: 0.04145523567434866
 Test accuracy: 0.9863
@@ -100,7 +100,7 @@ For now these are digit 7, 0 and 4 in order of worst to best.
 
 """
 
-predictions = model.predict(x_test) 
+predictions = model.predict(x_test)
 predictions = predictions.argmax(axis=1)
 y_test2 = y_test.argmax(axis=1)
 
@@ -113,7 +113,7 @@ For using mean squared error we get:
 Test loss: 0.006500150103870692
 Test accuracy: 0.9596
 
-So it's worse than categorical cross-entropy cost. 
+So it's worse than categorical cross-entropy cost.
 
 Now the worst digits are 8, 3 and 0 in order of worst to best
 
@@ -124,7 +124,7 @@ Test accuracy: 0.9501
 But we should do this a lot of times and plot the distribution.
 """
 
-""" 
+"""
 Using a random permutation p and running it again with MSE we get:
 
 Test loss: 0.012154618894844316
@@ -132,5 +132,3 @@ Test accuracy: 0.9173
 
 
 """
-
-
