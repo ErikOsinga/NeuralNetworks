@@ -19999,3 +19999,8 @@ Epoch number 3999
 Mean squared error: 0.031322
 Number of wrongly classified digits: 38.000000 
 Summed value of the weights w2: -127.059443 
+
+
+real	1807m36.078s
+user	1806m45.819s
+sys	0m12.894s
