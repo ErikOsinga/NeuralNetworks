@@ -7,11 +7,6 @@ from __future__ import print_function
 
 import numpy as np
 
-# For reproducibility
-np.random.seed(1337)
-
-
-
 import keras
 from keras.datasets import mnist
 from keras.models import Sequential
