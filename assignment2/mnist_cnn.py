@@ -44,19 +44,22 @@ print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
-# Make a random permutation for each example in the train/test set
-p = np.arange(28*28)
-np.random.shuffle(p)
+Permute = False
 
-for i in range(x_train.shape[0]):
-  xtrain_i = x_train[i].flatten()
-  xtrain_i = xtrain_i[p] # permute it and put it back
-  x_train[i] = xtrain_i.reshape(28,28,1)
+if Permute: 
+  # Make a random permutation for each example in the train/test set
+  p = np.arange(28*28)
+  np.random.shuffle(p)
 
-for i in range(x_test.shape[0]):
-  xtest_i = x_test[i].flatten()
-  xtest_i = xtest_i[p] # permute it and put it back
-  x_test[i] = xtest_i.reshape(28,28,1)
+  for i in range(x_train.shape[0]):
+    xtrain_i = x_train[i].flatten()
+    xtrain_i = xtrain_i[p] # permute it and put it back
+    x_train[i] = xtrain_i.reshape(28,28,1)
+
+  for i in range(x_test.shape[0]):
+    xtest_i = x_test[i].flatten()
+    xtest_i = xtest_i[p] # permute it and put it back
+    x_test[i] = xtest_i.reshape(28,28,1)
 
 # convert class vectors to binary class matrices
 y_train = keras.utils.to_categorical(y_train, num_classes)
@@ -74,7 +77,7 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
 
-model.compile(loss=keras.losses.mean_squared_error,
+model.compile(loss=keras.losses.categorical_crossentropy,#keras.losses.mean_squared_error,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
 
