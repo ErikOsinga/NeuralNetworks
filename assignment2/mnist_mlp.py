@@ -30,7 +30,7 @@ x_test /= 255
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
-Permute = True
+Permute = False
 
 if Permute: 
 	# Make a random permutation for each example in the train/test set
@@ -49,27 +49,37 @@ if Permute:
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
-model = Sequential()
-model.add(Dense(512, activation='relu', input_shape=(784,)))
-model.add(Dropout(0.2))
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(num_classes, activation='softmax'))
 
-model.summary()
 
-model.compile(loss='categorical_crossentropy',
-              optimizer=RMSprop(),
-              metrics=['accuracy'])
+# Make 50 models and save their accuracy and loss on the test set
+test_loss = []
+test_accuracy = []
+for i in range(0,50):
+	model = Sequential()
+	model.add(Dense(512, activation='relu', input_shape=(784,)))
+	model.add(Dropout(0.2))
+	model.add(Dense(512, activation='relu'))
+	model.add(Dropout(0.2))
+	model.add(Dense(num_classes, activation='softmax'))
 
-history = model.fit(x_train, y_train,
-                    batch_size=batch_size,
-                    epochs=epochs,
-                    verbose=1,
-                    validation_data=(x_test, y_test),shuffle=False) #Shuffle=False for reproducibility
-score = model.evaluate(x_test, y_test, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
+	model.summary()
+
+	model.compile(loss='categorical_crossentropy',
+	              optimizer=RMSprop(),
+	              metrics=['accuracy'])
+	history = model.fit(x_train, y_train,
+	                    batch_size=batch_size,
+	                    epochs=epochs,
+	                    verbose=0,
+	                    validation_data=(x_test, y_test),shuffle=False) #Shuffle=False for reproducibility
+	score = model.evaluate(x_test, y_test, verbose=0)
+	print('Test loss:', score[0])
+	print('Test accuracy:', score[1])
+	test_loss.append(score[0])
+	test_accuracy.append(score[1])
+
+np.save('./test_loss_MLP_default',test_loss)
+np.save('./test_accuracy_MLP_default',test_accuracy)
 
 """
 Test loss: 0.11605441395899883
