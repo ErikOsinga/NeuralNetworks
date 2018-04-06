@@ -44,7 +44,7 @@ print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
-Permute = False
+Permute = True
 
 if Permute: 
   # Make a random permutation for each example in the train/test set
@@ -97,8 +97,8 @@ for i in range(0,50):
     test_loss.append(score[0])
     test_accuracy.append(score[1])
     
-np.save('./test_loss_CNN_default',test_loss)
-np.save('./test_accuracy_CNN_default',test_accuracy)
+np.save('./test_loss_CNN_permute',test_loss)
+np.save('./test_accuracy_CNN_permute',test_accuracy)
 
 """
 Much much slower.
