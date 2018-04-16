@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
 '''An implementation of sequence to sequence learning for performing addition
+<<<<<<< HEAD
 Input: "535+61"
 Output: "596"
 Padding is handled by using a repeated sentinel character (space)
+=======
+
+Input: "535+61"
+Output: "596"
+Padding is handled by using a repeated sentinel character (space)
+
+>>>>>>> bcccb69a27ae8e5c3f15a59170529c080b740b89
 Input may optionally be reversed, shown to increase performance in many tasks in:
 "Learning to Execute"
 http://arxiv.org/abs/1410.4615
@@ -10,12 +18,25 @@ and
 "Sequence to Sequence Learning with Neural Networks"
 http://papers.nips.cc/paper/5346-sequence-to-sequence-learning-with-neural-networks.pdf
 Theoretically it introduces shorter term dependencies between source and target.
+<<<<<<< HEAD
 Two digits reversed:
 + One layer LSTM (128 HN), 5k training examples = 99% train/test accuracy in 55 epochs
 Three digits reversed:
 + One layer LSTM (128 HN), 50k training examples = 99% train/test accuracy in 100 epochs
 Four digits reversed:
 + One layer LSTM (128 HN), 400k training examples = 99% train/test accuracy in 20 epochs
+=======
+
+Two digits reversed:
++ One layer LSTM (128 HN), 5k training examples = 99% train/test accuracy in 55 epochs
+
+Three digits reversed:
++ One layer LSTM (128 HN), 50k training examples = 99% train/test accuracy in 100 epochs
+
+Four digits reversed:
++ One layer LSTM (128 HN), 400k training examples = 99% train/test accuracy in 20 epochs
+
+>>>>>>> bcccb69a27ae8e5c3f15a59170529c080b740b89
 Five digits reversed:
 + One layer LSTM (128 HN), 550k training examples = 99% train/test accuracy in 30 epochs
 '''
@@ -35,6 +56,10 @@ class CharacterTable(object):
     """
     def __init__(self, chars):
         """Initialize character table.
+<<<<<<< HEAD
+=======
+
+>>>>>>> bcccb69a27ae8e5c3f15a59170529c080b740b89
         # Arguments
             chars: Characters that can appear in the input.
         """
@@ -44,6 +69,10 @@ class CharacterTable(object):
 
     def encode(self, C, num_rows):
         """One hot encode given string C.
+<<<<<<< HEAD
+=======
+
+>>>>>>> bcccb69a27ae8e5c3f15a59170529c080b740b89
         # Arguments
             num_rows: Number of rows in the returned one hot encoding. This is
                 used to keep the # of rows for each data the same.
@@ -191,4 +220,8 @@ for iteration in range(1, 200):
             print(colors.ok + '☑' + colors.close, end=' ')
         else:
             print(colors.fail + '☒' + colors.close, end=' ')
+<<<<<<< HEAD
         print(guess)
+=======
+        print(guess)
+>>>>>>> bcccb69a27ae8e5c3f15a59170529c080b740b89
