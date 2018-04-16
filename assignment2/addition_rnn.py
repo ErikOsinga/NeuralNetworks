@@ -41,6 +41,21 @@ Five digits reversed:
 + One layer LSTM (128 HN), 550k training examples = 99% train/test accuracy in 30 epochs
 '''
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from __future__ import print_function
 from keras.models import Sequential
 from keras import layers
@@ -114,8 +129,8 @@ while len(questions) < TRAINING_SIZE:
     f = lambda: int(''.join(np.random.choice(list('0123456789'))
                     for i in range(np.random.randint(1, DIGITS + 1))))
     a, b = f(), f()
-    # Skip any addition questions we've already seen
-    # Also skip any such that x+Y == Y+x (hence the sorting).
+    ### Skip any addition questions we've already seen
+    ### Also skip any such that x+Y == Y+x (hence the sorting).
     key = tuple(sorted((a, b)))
     if key in seen:
         continue
