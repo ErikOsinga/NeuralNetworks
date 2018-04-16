@@ -19,8 +19,7 @@ import random
 import sys
 import io
 
-path = get_file('nietzsche.txt', origin='https://s3.amazonaws.com/text-datasets/nietzsche.txt')
-with io.open(path, encoding='utf-8') as f:
+with io.open('deadpool_script.txt',encoding='utf-8') as f:
     text = f.read().lower()
 print('corpus length:', len(text))
 
@@ -46,7 +45,6 @@ for i, sentence in enumerate(sentences):
     for t, char in enumerate(sentence):
         x[i, t, char_indices[char]] = 1
     y[i, char_indices[next_chars[i]]] = 1
-
 
 # build the model: a single LSTM
 print('Build model...')
