@@ -20,7 +20,7 @@ import sys
 import io
 
 # Don't forget to edit model.save('Filename')
-with io.open('some_harrypotterbooks_goodformat.txt',encoding='utf-8') as f:
+with io.open('data/some_harrypotterbooks_goodformat.txt',encoding='utf-8') as f:
     text = f.read().lower()
 print('corpus length:', len(text))
 

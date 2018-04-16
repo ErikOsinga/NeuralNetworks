@@ -85,3 +85,20 @@ for i in range(n):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 plt.show()
+
+# display the encoded representation
+n = 10  # how many digits we will display
+plt.figure(figsize=(20, 4))
+for i in range(n):
+    ax = plt.subplot(2,n,i+1)
+    plt.imshow(encoded_imgs[i].reshape(4,8))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    # display reconstruction
+    x = plt.subplot(2, n, i + 1 + n)
+    plt.imshow(decoded_imgs[i].reshape(28, 28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)    
+plt.show()
