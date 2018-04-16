@@ -94,12 +94,12 @@ TRAINING_SIZE = 50000
 DIGITS = 3
 REVERSE = True
 
-# Maximum length of input is 'int + int' (e.g., '345+678'). Maximum length of
+# Maximum length of input is 'int / int' (e.g., '360/120'). Maximum length of
 # int is DIGITS.
 MAXLEN = DIGITS + 1 + DIGITS
 
 # All the numbers, plus sign and space for padding.
-chars = '0123456789+ '
+chars = '0123456789/ '
 ctable = CharacterTable(chars)
 
 questions = []
@@ -110,6 +110,13 @@ while len(questions) < TRAINING_SIZE:
     f = lambda: int(''.join(np.random.choice(list('0123456789'))
                     for i in range(np.random.randint(1, DIGITS + 1))))
     a, b = f(), f()
+    if b > a: 
+        # Reverse so the division makes sense
+        b,a = a,b
+
+    while b == 0:
+        b = f()
+
     # Skip any addition questions we've already seen
     # Also skip any such that x+Y == Y+x (hence the sorting).
     key = tuple(sorted((a, b)))
@@ -117,9 +124,9 @@ while len(questions) < TRAINING_SIZE:
         continue
     seen.add(key)
     # Pad the data with spaces such that it is always MAXLEN.
-    q = '{}+{}'.format(a, b)
+    q = '{}/{}'.format(a, b)
     query = q + ' ' * (MAXLEN - len(q))
-    ans = str(a + b)
+    ans = str(a // b)
     # Answers can be of maximum size DIGITS + 1.
     ans += ' ' * (DIGITS + 1 - len(ans))
     if REVERSE:
@@ -128,7 +135,7 @@ while len(questions) < TRAINING_SIZE:
         query = query[::-1]
     questions.append(query)
     expected.append(ans)
-print('Total addition questions:', len(questions))
+print('Total division questions:', len(questions))
 
 print('Vectorization...')
 x = np.zeros((len(questions), MAXLEN, len(chars)), dtype=np.bool)
