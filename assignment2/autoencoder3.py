@@ -12,9 +12,6 @@ batch_size = 128
 num_classes = 29
 epochs = 20
 
-# the data, split between train and test sets
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-
 # 13440 images of 32x32 pixels, but flattened
 x_train = np.loadtxt('/home/s1546449/NeuralNetworks/assignment2/data/arabic/csvTrainImages13440x1024.csv',delimiter=',')
 x_test = np.loadtxt('/home/s1546449/NeuralNetworks/assignment2/data/arabic/csvTestImages3360x1024.csv',delimiter=',')
