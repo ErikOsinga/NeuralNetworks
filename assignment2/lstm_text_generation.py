@@ -100,7 +100,7 @@ def on_epoch_end(epoch, logs):
 
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 
-model.fit(x, y,
+hist = model.fit(x, y,
           batch_size=128,
           epochs=60,
           callbacks=[print_callback])

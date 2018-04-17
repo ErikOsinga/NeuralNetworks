@@ -53,7 +53,7 @@ decoder = Model(encoded_input, decoder_layer(encoded_input))
 
 autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
 
-autoencoder.fit(x_train, x_train,
+hist = autoencoder.fit(x_train, x_train,
                 epochs=50,
                 batch_size=256,
                 shuffle=True,

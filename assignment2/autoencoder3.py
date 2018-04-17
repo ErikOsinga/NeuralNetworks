@@ -6,7 +6,7 @@ from keras.models import Model
 from keras.datasets import mnist
 import numpy as np
 
-#Trying to autoencode arabic numbers
+#Trying to autoencode arabic characters
 
 batch_size = 128
 num_classes = 29
@@ -52,7 +52,7 @@ decoder = Model(encoded_input, decoder_layer(encoded_input))
 
 autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
 
-autoencoder.fit(x_train, x_train,
+hist = autoencoder.fit(x_train, x_train,
                 epochs=50,
                 batch_size=256,
                 shuffle=True,

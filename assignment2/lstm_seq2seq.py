@@ -45,13 +45,14 @@ from __future__ import print_function
 from keras.models import Model
 from keras.layers import Input, LSTM, Dense
 import numpy as np
+from matplotlib import pyplot as plt
 
 batch_size = 64  # Batch size for training.
 epochs = 100  # Number of epochs to train for.
 latent_dim = 256  # Latent dimensionality of the encoding space.
 num_samples = 10000  # Number of samples to train on.
 # Path to the data txt file on disk.
-data_path = './fra-eng/fra.txt'
+data_path = './afr-eng/afr.txt'
 
 # Vectorize the data.
 input_texts = [] 
@@ -138,7 +139,7 @@ model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
 
 # Run training
 model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
-model.fit([encoder_input_data, decoder_input_data], decoder_target_data,
+hist = model.fit([encoder_input_data, decoder_input_data], decoder_target_data,
           batch_size=batch_size,
           epochs=epochs,
           validation_split=0.2)
@@ -226,3 +227,12 @@ for seq_index in range(100):
     print('-')
     print('Input sentence:', input_texts[seq_index])
     print('Decoded sentence:', decoded_sentence)
+
+
+plt.plot(hist.history['loss'],label='Training loss')
+plt.plot(hist.history['val_loss'],label='Validation loss')
+plt.title('Loss for '+data_path[10:13])
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()          
+plt.show()
