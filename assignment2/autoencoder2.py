@@ -21,17 +21,14 @@ epochs = 20
 x_train = []
 x_test = []
 
-# only want 10 fruits
-count = 0
 for i in glob.glob('/home/s1546449/data/fruits-360/Training/*'):
     # i =  fruit directory
+    print (i)
     for j in glob.glob(i+'/*'):
         im = imageio.imread(j) #100x100x3 pixels
         im = im.reshape(30000)
         x_train.append(im)
         # j = images
-    if count == 10:
-        break
 
 
 
@@ -48,7 +45,7 @@ print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
 # this is the size of our encoded representations
-encoding_dim = 100  # 100 floats -> compression of factor 100, assuming the input is 10000 floats
+encoding_dim = 100  # 100 floats -> compression of factor 300, assuming the input is 30000 floats
 
 # this is our input placeholder
 input_img = Input(shape=(30000,))
