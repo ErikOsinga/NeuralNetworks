@@ -1,0 +1,65 @@
+logbook
+
+
+
+We are trying a MLP with the following architecture
+
+batch_size = 1
+epochs = 20
+
+model = Sequential()
+# divide number of inputs by a lot
+model.add(Dense(786432//(2048*8), activation='relu', input_shape=(786432,)))
+# model.add(Dropout(0.2))
+# and then multiplying again
+model.add(Dense(786432, activation='sigmoid'))
+model.compile(loss='mean_squared_error',
+              optimizer=RMSprop(),
+              metrics=['accuracy'])
+
+
+Which is basically a sort of autoencoder?
+
+We accidently put the satellite images as y_train, but the network was already learning to output the gray image with the Google logo at the bottom. 
+--> should put this in the report
+
+
+Should probably try to use binary_crossentropy loss, like in the MNIST example, maybe with optimizer adadelta or adam?
+
+
+We accidently screwed up the train/test split, but still it seemed to learn the general colors.
+
+
+Now, running the network again, expecting no large bugs in the code, we change the batch size to 5,
+
+We inspect the images, and it seems the network outputs the same image for every input image.
+Maybe this is because of the batch size, where it gets multiple images before learning or its because of the loss function, because this is how it minimizes the error?
+
+Batch size to 1 doesn't fix this issue, we will try a new loss function and optimizer.
+
+With adadelta and binary crossentropy the result is a gray image after 20 epochs, with batch_size = 1. 
+Maybe this makes for a slower learning process, so we try an additional 60 epochs after this.
+The network doesn't improve beyond loss: 0.3461 - val_loss: 0.3474
+
+We try to use the ADAM optimizer now, but we think it has to do with the loss function.
+ADAM shows a totally different image, but with about the same loss function. But the image is still a stack of multiple road maps on top of each other.
+
+
+So then in conclusion, it seems that ADAM + binary crossentropy outputs about the same image as RMSProp + mean squared error
+
+So what about ADAM + mean squared error?
+--> got stuck in a local minimum, outputs 1s everywhere --> white image
+--> twice.
+
+
+So what about RMSProp + binary crossentropy?
+Output looks very promising. Saved as batchsize1_epochs_20_RMSProp_BCE
+Upon further inspection, it seems like, again the network is only outputting one single image, but now this time it looks a lot like the first image, but not like the other images.
+Weirdly, it seems like the network learned the first example??
+It's also outputting this example on the test set.
+With 40 epochs in total it seems like it is starting to merge the features again.
+
+Will ask tomorrow why the network would only output one image every time.
+
+
+
