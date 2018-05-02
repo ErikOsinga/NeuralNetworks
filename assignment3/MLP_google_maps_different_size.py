@@ -12,6 +12,12 @@ import matplotlib.image as mpimg
 from matplotlib import pyplot as plt
 from sklearn import model_selection
 
+'''
+Second try of building a simple MLP. This time we will try to fit 28x28x3 images
+with a zoom level of 12
+'''
+
+
 def load_data(amount_of_examples,data_dir):
 	'''
 	Loads the satellite and roadmap images, and splits into train/test set
@@ -48,9 +54,9 @@ def load_data(amount_of_examples,data_dir):
 
 	return x_train, y_train, x_test, y_test
 
-data_dir = '/data/s1546449/maps_data/'
+data_dir = '/data/s1546449/maps_data_28_zoom12/'
 
-x_train, y_train, x_test, y_test = load_data(100,data_dir)
+x_train, y_train, x_test, y_test = load_data(1000,data_dir)
 
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1]*x_train.shape[2]*x_train.shape[3])
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1]*x_test.shape[2]*x_test.shape[3])
@@ -72,65 +78,69 @@ print (y_test.shape)
 
 
 def get_model_memory_usage(batch_size, model):
-    import numpy as np
-    from keras import backend as K
+	if batch_size == None:
+		batch_size = 32
 
-    shapes_mem_count = 0
-    for l in model.layers:
-        single_layer_mem = 1
-        for s in l.output_shape:
-            if s is None:
-                continue
-            single_layer_mem *= s
-        shapes_mem_count += single_layer_mem
+	from keras import backend as K
 
-    trainable_count = np.sum([K.count_params(p) for p in set(model.trainable_weights)])
-    non_trainable_count = np.sum([K.count_params(p) for p in set(model.non_trainable_weights)])
+	shapes_mem_count = 0
+	for l in model.layers:
+		single_layer_mem = 1
+		for s in l.output_shape:
+			if s is None:
+				continue
+			single_layer_mem *= s
+		shapes_mem_count += single_layer_mem
 
-    total_memory = 4.0*batch_size*(shapes_mem_count + trainable_count + non_trainable_count)
-    gbytes = np.round(total_memory / (1024.0 ** 3), 3)
-    return gbytes
+	trainable_count = np.sum([K.count_params(p) for p in set(model.trainable_weights)])
+	non_trainable_count = np.sum([K.count_params(p) for p in set(model.non_trainable_weights)])
+
+	total_memory = 4.0*batch_size*(shapes_mem_count + trainable_count + non_trainable_count)
+	gbytes = np.round(total_memory / (1024.0 ** 3), 3)
+	return gbytes
 
 
 batch_size = None
-epochs = 100
+epochs = 400
+
+dimensionality = x_train.shape[1]
 
 model = Sequential()
-# divide number of inputs by 1024
-model.add(Dense(786432//(2048*8), activation='relu', input_shape=(786432,)))
+# divide number of inputs by 2048
+model.add(Dense(dimensionality//(2048), activation='relu', input_shape=(dimensionality,)))
 # model.add(Dropout(0.2))
 # and then multiplying again
-model.add(Dense(786432, activation='sigmoid'))
+model.add(Dense(dimensionality, activation='sigmoid'))
 # model.add(Dropout(0.2))
 
 model.summary()
 
-print ('Required GB of memory:',get_model_memory_usage(1,model))
+print ('Required GB of memory:',get_model_memory_usage(batch_size,model))
 
 # initial try
 # model.compile(loss='mean_squared_error',
-#               optimizer=RMSprop(),
-#               metrics=['accuracy'])
+#			   optimizer=RMSprop(),
+#			   metrics=['accuracy'])
 
 # stolen from keras MNIST autoencoder blog
-# model.compile(optimizer=RMSprop(lr=0.001), loss='binary_crossentropy')
+model.compile(optimizer=RMSprop(lr=0.001), loss='binary_crossentropy')
 
 # model.compile(optimizer=RMSprop(), loss='squared_hinge')
 
-model.compile(optimizer=adam(lr=0.001), loss='mean_squared_error')
+# model.compile(optimizer=adam(lr=0.001), loss='mean_squared_error')
 
 history = model.fit(x_train, y_train,
-                    batch_size=batch_size,
-                    epochs=epochs,
-                    verbose=1,
-                    validation_data=(x_test, y_test))
+					batch_size=batch_size,
+					epochs=epochs,
+					verbose=1,
+					validation_data=(x_test, y_test))
 score = model.evaluate(x_test, y_test, verbose=0)
 
 # print('Test loss:', score[0])
 # print('Test accuracy:', score[1])
 
 def show_image(image):
-	plt.imshow(image.reshape(512,512,3))
+	plt.imshow(image.reshape(100,100,3))
 	plt.show()
 
 def show_input_and_prediction(image_number,predictions):
@@ -141,17 +151,17 @@ def show_input_and_prediction(image_number,predictions):
 	fig = plt.figure()
 
 	ax =  fig.add_subplot(221)
-	ax.imshow(x_image.reshape(512,512,3))
+	ax.imshow(x_image.reshape(100,100,3))
 	ax.set_title('Input image, %i'%image_number)
 
 	ax = fig.add_subplot(222)
 	ax.set_title('True image, %i'%image_number)
-	ax.imshow(y_image.reshape(512,512,3))
+	ax.imshow(y_image.reshape(100,100,3))
 	
 	ax = fig.add_subplot(223)
-	ax.imshow(pred_image.reshape(512,512,3))
+	ax.imshow(pred_image.reshape(100,100,3))
 	ax.set_title('Predicted image, %i'%image_number)
-	ax.imshow(pred_image.reshape(512,512,3))
+	ax.imshow(pred_image.reshape(100,100,3))
 	
 	plt.show()
 

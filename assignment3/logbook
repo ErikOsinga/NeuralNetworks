@@ -59,7 +59,32 @@ Weirdly, it seems like the network learned the first example??
 It's also outputting this example on the test set.
 With 40 epochs in total it seems like it is starting to merge the features again.
 
-Will ask tomorrow why the network would only output one image every time.
+Will ask tomorrow why the network would only output the same image every time.
+
+
+We tried adding 0.2 dropout rate after the first layer, but this doesnt seem to help.
+
+
+
+We'll try 500 images now with a batch size of 5, maybe less overfitting? Nope, still same problem..
+
+
+Batch size back to 1, and number of images back to 100, maybe different loss function?
+
+LATER: Maybe try a denoising autoencoder?
+
+
+
+For now, try smaller images, and we will add one zoom increment, 
+so images are now 100x100x3 and with zoom 16, we will probably just see one or zero roads
+Maybe this simple problem is easier to learn? 
+The reasoning behind this was, that now our images have 800,000 dimensions which we are trying to learn with only 100 input images, so if we reduce the dimension size we can also reduce the number of input images, and probably the network will learn?
+
+
+So will try to use 28x28x3 images, and about 10x as much as input size
+
+
+
 
 
 

@@ -6,7 +6,7 @@ import sys
 data_dir = '/home/erik/Desktop/vakken/NeuralNetworks/maps_data/'
 
 # for running on Duranium
-data_dir = '/data/s1546449/maps_data/'
+data_dir = '/data/s1546449/maps_data_28_zoom12/'
 
 def generate_link(size,lat,lon,zoom,maptype='roadmap'):
 	'''
@@ -41,7 +41,7 @@ def download_from_link(link,filename):
 
 	request.urlretrieve(link,data_dir+filename+'.png')
 
-def download_images(number_of_images,num_already_downloaded):
+def download_images(number_of_images,num_already_downloaded,size,zoom):
 	'''
 	Download a square root-able number of images 
 	'''
@@ -74,12 +74,12 @@ def download_images(number_of_images,num_already_downloaded):
 		for lon in np.linspace(starting_lon,ending_lon,num_im):
 			image_number = '%06i' % i
 			
-			link = generate_link(size=512,lat=lat,lon=lon,zoom=15,maptype='satellite')
+			link = generate_link(size=size,lat=lat,lon=lon,zoom=zoom,maptype='satellite')
 			
 			filename = image_number+'_satellite'
 			download_from_link(link,filename)
 
-			link = generate_link(size=512,lat=lat,lon=lon,zoom=15,maptype='roadmap')
+			link = generate_link(size=size,lat=lat,lon=lon,zoom=zoom,maptype='roadmap')
 			
 			filename = image_number + '_roadmap'
 			download_from_link(link,filename)
@@ -103,7 +103,9 @@ upper_lon = 6.410731
 
 lower_lat = 51.297145
 lower_lon = 5.398244
-# Each image is about 500m
+# Each image is about 500m (for the zoom 15, 512x512x3 pixel ones)
 
-number_of_images = 6400
-download_images(number_of_images,num_already_downloaded=2500)
+number_of_images = 12100
+
+print ('Saving to data directory: ', data_dir)
+download_images(number_of_images,num_already_downloaded=0,size=28,zoom=12)
