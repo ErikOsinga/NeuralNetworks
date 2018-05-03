@@ -25,6 +25,7 @@ def load_data(amount_of_examples,data_dir):
 	amount_of_examples -- number of examples to load in
 	'''
 
+	print ('Loading %i images..'%amount_of_examples)
 	counter = 0
 	x_train = []
 	y_train = []
@@ -56,7 +57,8 @@ def load_data(amount_of_examples,data_dir):
 
 data_dir = '/data/s1546449/maps_data_28_zoom12/'
 
-x_train, y_train, x_test, y_test = load_data(1000,data_dir)
+# Load the data
+x_train, y_train, x_test, y_test = load_data(6000,data_dir)
 
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1]*x_train.shape[2]*x_train.shape[3])
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1]*x_test.shape[2]*x_test.shape[3])
@@ -106,8 +108,8 @@ epochs = 400
 dimensionality = x_train.shape[1]
 
 model = Sequential()
-# divide number of inputs by 2048
-model.add(Dense(dimensionality//(2048), activation='relu', input_shape=(dimensionality,)))
+# divide number of inputs by 16
+model.add(Dense(dimensionality//(56), activation='relu', input_shape=(dimensionality,)))
 # model.add(Dropout(0.2))
 # and then multiplying again
 model.add(Dense(dimensionality, activation='sigmoid'))
@@ -140,7 +142,7 @@ score = model.evaluate(x_test, y_test, verbose=0)
 # print('Test accuracy:', score[1])
 
 def show_image(image):
-	plt.imshow(image.reshape(100,100,3))
+	plt.imshow(image.reshape(int((dimensionality/3)**0.5),int((dimensionality/3)**0.5),3))
 	plt.show()
 
 def show_input_and_prediction(image_number,predictions):
@@ -151,17 +153,16 @@ def show_input_and_prediction(image_number,predictions):
 	fig = plt.figure()
 
 	ax =  fig.add_subplot(221)
-	ax.imshow(x_image.reshape(100,100,3))
 	ax.set_title('Input image, %i'%image_number)
+	ax.imshow(x_image.reshape(int((dimensionality/3)**0.5),int((dimensionality/3)**0.5),3))
 
 	ax = fig.add_subplot(222)
 	ax.set_title('True image, %i'%image_number)
-	ax.imshow(y_image.reshape(100,100,3))
+	ax.imshow(y_image.reshape(int((dimensionality/3)**0.5),int((dimensionality/3)**0.5),3))
 	
 	ax = fig.add_subplot(223)
-	ax.imshow(pred_image.reshape(100,100,3))
 	ax.set_title('Predicted image, %i'%image_number)
-	ax.imshow(pred_image.reshape(100,100,3))
+	ax.imshow(pred_image.reshape(int((dimensionality/3)**0.5),int((dimensionality/3)**0.5),3))
 	
 	plt.show()
 

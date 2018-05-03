@@ -6,7 +6,7 @@ import sys
 data_dir = '/home/erik/Desktop/vakken/NeuralNetworks/maps_data/'
 
 # for running on Duranium
-data_dir = '/data/s1546449/maps_data_28_zoom12/'
+data_dir = '/data/s1546449/maps_data_28_zoom12_2/'
 
 def generate_link(size,lat,lon,zoom,maptype='roadmap'):
 	'''
@@ -52,20 +52,21 @@ def download_images(number_of_images,num_already_downloaded,size,zoom):
 	# Number of images per direction 
 	num_im = int(number_of_images**0.5) 
 
-	starting_lat = 52.1688731
+	# go from 52.1688731, 4.4569086 approx Leiden
+	starting_lat = 47.792078
+	ending_lat = 52.1688731
+	
+	# to      47.792078, 13.189666 approx Salzburg 
 	starting_lon = 4.4569086
+	ending_lon = 13.189666
 
+	'''Note: '''
 	# For zoom 15 and size 512x512 the increments must be 
-	increment_lat = 0.003200
-	increment_lon = 0.005450
+	# increment_lat = 0.003200
+	# increment_lon = 0.005450
 
-	# Because first 2500 images have already been downloaded:
-	starting_lat = starting_lat + num_already_downloaded * increment_lat
-	starting_lon = starting_lon + num_already_downloaded * increment_lon
-
-	# Walk from starting_coords to ending_coords
-	ending_lat = starting_lat + num_im * increment_lat
-	ending_lon = starting_lon + num_im * increment_lon
+	# Because first num_already_downloaded images have already been downloaded:
+	# redefine starting and ending coordinates
 
 	print ('Downloading %i images, starting at image number %i'%(number_of_images
                                                 ,num_already_downloaded+1) )
@@ -83,27 +84,14 @@ def download_images(number_of_images,num_already_downloaded,size,zoom):
 			
 			filename = image_number + '_roadmap'
 			download_from_link(link,filename)
-			
+
 			sys.stdout.write("\r%i"%i)
 			sys.stdout.flush()
 
 			i += 1
 
 
-
-# Definining a square in which the data must fit
-left_lat = 52.133903
-left_lon = 4.309731
-
-right_lat = 52.081739
-right_lon =  7.046543
-
-upper_lat = 53.507297
-upper_lon = 6.410731
-
-lower_lat = 51.297145
-lower_lon = 5.398244
-# Each image is about 500m (for the zoom 15, 512x512x3 pixel ones)
+# Note: # Each image is about 500m (for the zoom 15, 512x512x3 pixel ones)
 
 number_of_images = 12100
 

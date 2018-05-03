@@ -85,6 +85,25 @@ So will try to use 28x28x3 images, and about 10x as much as input size
 
 
 
+Seems downloading the images went wrong starting from 6358...
+which is coincidentally the number we start at.
+But this does seem to get learned by the network.
+
+
+Will try a new approach to download the images, namely downloading images in a defined square,
+which is now bound by the opposite corners, Leiden and Salzburg.
+
+
+Also will split the original 512x512 images we had downloaded at zoom 15 into smaller
+28x28 images, this will probably be faster for downloading data, as it queries the website less.
+And it does not have the Google logo on every image!!
+So we should stop one row earlier when splitting to get rid of the Google Logo.
+Thought: At the same time it could be harder for the network, because some parts of the images
+seem very weird, for example there is buildings in the original satellite image 0
+and then in the roadmap there is water.
+This will affect the cost function a lot in the small images, since water comes out of nowhere in the whole image, but in the large image this is just a small error. I think this will average out though.
+
+Splitting 8900 512x512 images into 324 images makes for 2.8 MILLION IMAGES, totalling only 5.7 GB roundabout.
 
 
 
