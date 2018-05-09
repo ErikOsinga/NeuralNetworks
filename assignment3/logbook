@@ -107,3 +107,33 @@ Splitting 8900 512x512 images into 324 images makes for 2.8 MILLION IMAGES, tota
 
 
 
+
+Probably reducing the dimension too much.. Had output shape of first layer (None,42) (divide by 56). Will divide by 16 now.
+
+Shows promise for the not split images, somehow the split images just look bad. Might also be due to the zoom difference. The not split images show water features for example.
+
+
+
+Will try the not-split images dividing by 8 now.
+
+There is a pretty impressive result at prediction_4750, so I will run this again, but save the model now. Also, this run will go in the archive, under archive/network_1
+
+archive/network1 : 
+- Divide number of inputs by 8
+- Batch size = None
+- Epochs = 5000
+- optimizer=RMSprop(lr=0.001), loss='binary_crossentropy'
+- activation is 'relu' and then 'sigmoid'
+
+
+Running the same model again, but now on 12000 images, will same it under achive/network_2
+
+
+
+
+
+
+
+
+
+

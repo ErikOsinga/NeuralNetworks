@@ -6,7 +6,9 @@ import sys
 data_dir = '/home/erik/Desktop/vakken/NeuralNetworks/maps_data/'
 
 # for running on Duranium
+# data_dir = '/data/s1546449/maps_data_28_zoom15/'
 data_dir = '/data/s1546449/maps_data_28_zoom12_2/'
+
 
 def generate_link(size,lat,lon,zoom,maptype='roadmap'):
 	'''
@@ -21,7 +23,10 @@ def generate_link(size,lat,lon,zoom,maptype='roadmap'):
 	'''
 	begin = "http://maps.google.com/maps/api/staticmap?sensor=false"
 	end = "&style=feature:all|element:labels|visibility:off"
-	key = "&key=AIzaSyD7o6a-MKAtFX08sqHG-_Vkk8OShV6oJmY"
+	# key = "&key=AIzaSyD7o6a-MKAtFX08sqHG-_Vkk8OShV6oJmY"
+
+	# Petros key
+	key = "&key=AIzaSyBcVLuX2eeRNJ2k0yrW99XBDQ7dENPTs4M" 
 	
 	size = str(size)+'x'+str(size)
 	center = str(lat)+','+str(lon)
@@ -51,7 +56,8 @@ def download_images(number_of_images,num_already_downloaded,size,zoom):
 
 	# Number of images per direction 
 	num_im = int(number_of_images**0.5) 
-
+	
+	'''
 	# go from 52.1688731, 4.4569086 approx Leiden
 	starting_lat = 47.792078
 	ending_lat = 52.1688731
@@ -59,6 +65,15 @@ def download_images(number_of_images,num_already_downloaded,size,zoom):
 	# to      47.792078, 13.189666 approx Salzburg 
 	starting_lon = 4.4569086
 	ending_lon = 13.189666
+	'''
+
+	# New square
+	# go from 52, 13 approx berlin, to Roemenie
+	starting_lat = 47.968274
+	ending_lat = 52.893429 
+
+	starting_lon = 13.768414
+	ending_lon = 22.931304 
 
 	'''Note: '''
 	# For zoom 15 and size 512x512 the increments must be 
@@ -93,7 +108,8 @@ def download_images(number_of_images,num_already_downloaded,size,zoom):
 
 # Note: # Each image is about 500m (for the zoom 15, 512x512x3 pixel ones)
 
-number_of_images = 12100
+number_of_images = 12100 # actually downloading twice as much, since we 
+						# have a satellite and roadmap for every image
 
 print ('Saving to data directory: ', data_dir)
-download_images(number_of_images,num_already_downloaded=0,size=28,zoom=12)
+download_images(number_of_images,num_already_downloaded=12100,size=28,zoom=12)

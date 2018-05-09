@@ -3,7 +3,7 @@ import numpy as np
 
 import glob
 import matplotlib.image as mpimg
-import scipy
+import scipy.misc
 
 def split_image(sat_image,road_image,num_images,new_image_dir,counter):
 	"""
@@ -26,7 +26,7 @@ def split_image(sat_image,road_image,num_images,new_image_dir,counter):
 			new_sat_image = sat_image[new_im_size*i:new_im_size*(i+1), new_im_size*j:new_im_size*(j+1)]
 			new_road_image = road_image[new_im_size*i:new_im_size*(i+1), new_im_size*j:new_im_size*(j+1)]
 			scipy.misc.imsave('%s/%i_%i_%i_satellite.png'%(new_image_dir,counter,i,j) ,new_sat_image)
-			scipy.misc.imsave('%s/%i_%i_%i._roadmap.png'%(new_image_dir,counter,i,j) ,new_road_image)
+			scipy.misc.imsave('%s/%i_%i_%i_roadmap.png'%(new_image_dir,counter,i,j) ,new_road_image)
 
 def split_images(image_size,new_image_size,image_dir,new_image_dir,amount):
 	"""
