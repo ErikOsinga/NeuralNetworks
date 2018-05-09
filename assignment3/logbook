@@ -133,6 +133,20 @@ Running the same model again, but now on 12000 images, will same it under achive
 
 
 
+Running the 200x200 pixel images CNN now, takes very long,
+meanwhile experimenting with a smaller part of the dataset and architectures
+the simplest CNN architecture with 3 kernels of 5x5 RELU and then again 3 kernels of 5x5 sigmoid already shows some roads in some pictures, but this could also be because it is just showing the satellite images. But after some training it seems to get the gray color right. We wonder if it will ever learn the road colors
+Saved the output under 
+archive/cnn_200_testing1
+
+woops deleted. But will save the output of 400 epochs in that directory then
+
+
+Second try: 
+still 3 kernels in first layer, but now they are size 10x10 
+second layer is the same
+Doesn't change much.
+
 
 
 
