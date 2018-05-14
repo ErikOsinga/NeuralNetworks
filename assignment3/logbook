@@ -151,3 +151,34 @@ Doesn't change much.
 
 
 
+The 'deep' neural network model is performing quite well!
+Saved under archive/network_3 
+the model is as follows
+
+batch_size = None
+epochs = 1000
+
+model = Sequential()
+# divide number of inputs by 8
+model.add(Conv2D(8,kernel_size=(5,5),padding='same',activation='relu',input_shape=(200,200,3)))
+
+model.add(Conv2D(16,kernel_size=(5,5),padding='same',activation='relu'))
+
+model.add(Conv2D(32,kernel_size=(5,5),padding='same',activation='relu'))
+
+model.add(Conv2D(16,kernel_size=(5,5),padding='same',activation='relu'))
+
+model.add(Conv2D(8,kernel_size=(5,5),padding='same',activation='relu'))
+
+model.add(Conv2D(3,kernel_size=(5,5),padding='same',activation='sigmoid'))
+
+model.summary()
+
+print ('Required GB of memory:',get_model_memory_usage(batch_size,model))
+
+# model.compile(optimizer=RMSprop(lr=0.001), loss='binary_crossentropy')
+
+model.compile(optimizer='RMSprop',loss='binary_crossentropy')
+
+
+
